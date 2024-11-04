@@ -7,8 +7,8 @@
 import {
   deliverJokesApi,
   submitJokesApi,
-  moderateJokesApi
-} from './api.service';
+  moderateJokesApi,
+} from "./api.service";
 
 interface Joke {
   id: string | number;
@@ -32,44 +32,44 @@ interface AdminCredentials {
 // Deliver Jokes Service
 export const getRandomJoke = async (type?: string) => {
   const params = type ? { type } : {};
-  const { data } = await deliverJokesApi.get('/api/jokes/random', { params });
+  const { data } = await deliverJokesApi.get("/api/jokes/random", { params });
   return data;
 };
 
 export const getJokeTypes = async () => {
-  const { data } = await deliverJokesApi.get('/api/jokes/types');
+  const { data } = await deliverJokesApi.get("/api/jokes/types");
   return data;
 };
 
 export const createJoke = async (joke: JokeSubmission) => {
-  const { data } = await deliverJokesApi.post('/api/jokes', joke);
+  const { data } = await deliverJokesApi.post("/api/jokes", joke);
   return data;
 };
 
 // Submit Jokes Service
 export const submitJoke = async (joke: JokeSubmission) => {
-  const { data } = await submitJokesApi.post('/api/jokes', joke);
+  const { data } = await submitJokesApi.post("/api/jokes", joke);
   return data;
 };
 
 export const getPendingJokes = async () => {
-  const { data } = await submitJokesApi.get('/api/jokes/pending');
+  const { data } = await submitJokesApi.get("/api/jokes/pending");
   return data;
 };
 
 // Moderate Jokes Service
 export const adminLogin = async (credentials: AdminCredentials) => {
-  const { data } = await moderateJokesApi.post('/api/auth/login', credentials);
+  const { data } = await moderateJokesApi.post("/api/auth/login", credentials);
   return data;
 };
 
 export const getJokesForModeration = async () => {
-  const { data } = await moderateJokesApi.get('/api/jokes/moderate');
+  const { data } = await moderateJokesApi.get("/api/jokes/moderate");
   return data;
 };
 
 export const approveJoke = async (joke: Joke) => {
-  const { data } = await moderateJokesApi.post('/api/jokes/approve', joke);
+  const { data } = await moderateJokesApi.post("/api/jokes/approve", joke);
   return data;
 };
 

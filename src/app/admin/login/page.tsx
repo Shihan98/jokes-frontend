@@ -1,24 +1,28 @@
 "use client";
-import jwt from "jsonwebtoken";
-import React, { useState, useEffect } from "react";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import LoginForm from "@/components/admin-dashboard/LoginPage";
 
+type DecodedToken = JwtPayload & {
+  exp?: number;
+};
+
 const isTokenExpired = (token: string): boolean => {
   try {
-    const decoded: any = jwt.decode(token);
+    const decoded: DecodedToken | null = jwt.decode(token) as DecodedToken;
 
     if (!decoded || !decoded.exp) {
       console.error("Invalid token format or missing 'exp' claim");
-      return true; // Consider invalid tokens as expired
+      return true;
     }
 
     const currentTime = Math.floor(Date.now() / 1000);
 
-    return decoded.exp < currentTime; // Return true if expired, false if valid
+    return decoded.exp < currentTime;
   } catch (error) {
     console.error("Error decoding token:", error);
-    return true; // Consider an error in decoding as an expired token
+    return true;
   }
 };
 
@@ -29,7 +33,6 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (authToken && !isTokenExpired(authToken)) {
-      // If token is valid, redirect to a protected page (e.g., dashboard)
       router.push("/admin/dashboard");
     }
   }, [authToken, router]);

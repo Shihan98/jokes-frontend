@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Joke } from "@/lib/mockData";
 import { useApproveJoke, useRejectJoke } from "@/hooks/jokes";
-// import { message } from "antd";
+import { message } from "antd";
 
 interface JokeCardProps {
   joke: Joke;
@@ -24,11 +24,11 @@ const JokeCard = ({ joke, jokeTypes, onUpdate, onRemove }: JokeCardProps) => {
       {
         onSuccess: () => {
           onRemove(joke.id);
-          // Optionally, show a success toast/notification here
+          message.success("The joke has aproved.");
         },
         onError: (error) => {
           console.error("Failed to approve joke:", error);
-          // Optionally, show an error toast/notification here
+          message.error("Failed to approve joke.");
         },
       },
     );
@@ -38,12 +38,11 @@ const JokeCard = ({ joke, jokeTypes, onUpdate, onRemove }: JokeCardProps) => {
     rejectJoke(joke.id, {
       onSuccess: () => {
         onRemove(joke.id);
-        // message.success('This is a success message');
-        // Optionally, show a success toast/notification here
+        message.success("The joke has removed.");
       },
       onError: (error) => {
         console.error("Failed to reject joke:", error);
-        // Optionally, show an error toast/notification here
+        message.error("Failed to reject joke.");
       },
     });
   };
@@ -52,10 +51,10 @@ const JokeCard = ({ joke, jokeTypes, onUpdate, onRemove }: JokeCardProps) => {
     try {
       onUpdate({ ...joke, content, type });
       setIsEditing(false);
-      // Optionally, show a success toast/notification here
+      message.success("The joke has successfully updated.");
     } catch (error) {
       console.error("Failed to update joke:", error);
-      // Optionally, show an error toast/notification here
+      message.error("Failed to update joke.");
     }
   };
 

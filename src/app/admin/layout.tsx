@@ -1,21 +1,27 @@
 "use client";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+
+type DecodedToken = JwtPayload & {
+  exp?: number;
+};
 
 export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const router = useRouter();
-  const authToken = localStorage.getItem("token") || "";
+
+  const authToken =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   const isTokenExpired = (token: string): boolean => {
     try {
-      const decoded: any = jwt.decode(token);
+      const decoded: DecodedToken | null = jwt.decode(token) as DecodedToken;
 
       if (!decoded || !decoded.exp) {
-        console.error("Invalid token format or missing 'exp' claim");
-        return true; // Consider invalid tokens as expired
+        console.error("Invalid token format");
+        return true;
       }
 
       const currentTime = Math.floor(Date.now() / 1000);
@@ -29,7 +35,7 @@ export default function Layout({
       }
     } catch (error) {
       console.error("Error decoding token:", error);
-      return true; // Consider an error in decoding as an expired token
+      return true;
     }
   };
 

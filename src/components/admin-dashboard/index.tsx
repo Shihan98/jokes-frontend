@@ -20,7 +20,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (jokeData) {
-      // Transform the response to match the `Joke` type
       const formattedJokes = jokeData.map((joke: any) => ({
         id: joke._id,
         content: joke.content,
