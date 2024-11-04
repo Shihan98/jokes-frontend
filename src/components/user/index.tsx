@@ -1,8 +1,7 @@
 "use client";
 import { useGetRandomJoke, useSubmitJoke } from "@/hooks/jokes";
+import { message } from "antd";
 import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 interface Joke {
   id: string;
@@ -63,11 +62,11 @@ const UserDashboard = () => {
         type: newJoke.type,
       });
       console.log("Joke submitted successfully!");
-      toast.success("Joke submitted successfully!");
+      message.success("Joke submitted successfully!");
       setNewJoke({ content: "", type: mockJokeTypes[0] });
     } catch (error) {
       console.error("Failed to submit joke:", error);
-      toast.error("Failed to submit joke. Please try again.");
+      message.success("Failed to submit joke. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
